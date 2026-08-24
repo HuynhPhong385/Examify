@@ -1,0 +1,4 @@
+/public/uploads/questions/*
+!/public/uploads/questions/.gitkeep
+.env
+.DS_Store

@@ -1,0 +1,3 @@
+<section class="result-card"><span class="eyebrow">KẾT QUẢ</span><h1><?= e($attempt['exam_title']) ?></h1><div class="score"><?= number_format((float)$attempt['score'],2) ?><small>/10</small></div><p>Đúng <?= (int)$attempt['correct_count'] ?>/<?= (int)$attempt['total_questions'] ?> câu</p><a class="btn" href="<?= url('/history') ?>">Xem lịch sử</a></section>
+<h2>Chi tiết</h2>
+<?php foreach($details as $i=>$q): ?><article class="question-card <?= $q['is_correct']?'correct':'wrong' ?>"><div class="q-number">Câu <?= $i+1 ?></div><div><?= $q['content'] ?></div><div class="meta">Bạn chọn: <b><?= e($q['selected_option']??'Chưa trả lời') ?></b> · Đáp án: <b><?= e($q['correct_option']) ?></b></div></article><?php endforeach; ?>
