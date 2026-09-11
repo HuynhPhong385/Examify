@@ -19,6 +19,7 @@ require __DIR__ . '/_header.php';
 <div id="examGrid" class="cards-grid">
     <div class="skeleton">Đang tải danh sách đề...</div>
 </div>
+<nav id="examPagination" class="pagination-wrap" aria-label="Phân trang đề thi"></nav>
 <script>
 window.EXAMIFY_PAGE = 'exams';
 </script>

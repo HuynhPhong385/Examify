@@ -1,8 +1,12 @@
 (() => {
     const grid = document.getElementById('examGrid');
+    const pagination = document.getElementById('examPagination');
     const search = document.getElementById('liveSearch');
     const dropdown = document.getElementById('searchDropdown');
     if (!grid) return;
+
+    const PAGE_SIZE = 9; 
+    let currentPage = 1;
 
     const card = exam => `
         <article class="exam-card">
@@ -19,14 +23,40 @@
             <a class="btn primary" href="${Examify.url(`/exam.php?id=${Number(exam.id)}`)}">Làm bài</a>
         </article>`;
 
-    function load() {
-        Examify.api('/exams?limit=30')
+    function load(page = 1) {
+        currentPage = Math.max(1, page);
+        grid.innerHTML = '<div class="skeleton">Đang tải danh sách đề...</div>';
+        if (pagination) pagination.innerHTML = '';
+
+        Examify.api(`/exams?limit=${PAGE_SIZE}&page=${currentPage}`)
             .then(data => {
-                grid.innerHTML = data.items.length
-                    ? data.items.map(card).join('')
-                    : '<div class="empty">Chưa có đề thi nào được xuất bản.</div>';
+                const items = data.items || [];
+                grid.innerHTML = items.length
+                    ? items.map(card).join('')
+                    : (currentPage > 1
+                        ? '<div class="empty">Trang này không có đề thi nào.</div>'
+                        : '<div class="empty">Chưa có đề thi nào được xuất bản.</div>');
+                renderPagination(Number(data.page) || currentPage, items.length);
+                grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
             })
-            .catch(err => grid.innerHTML = `<div class="alert error">${Examify.escapeHtml(err.message)}</div>`);
+            .catch(err => {
+                grid.innerHTML = `<div class="alert error">${Examify.escapeHtml(err.message)}</div>`;
+            });
+    }
+    
+    function renderPagination(page, itemCount) {
+        if (!pagination) return;
+        const hasPrev = page > 1;
+        const hasNext = itemCount === PAGE_SIZE;
+        if (!hasPrev && !hasNext) return;
+
+        pagination.innerHTML = `
+            <button type="button" class="btn" id="examPagePrev" ${hasPrev ? '' : 'disabled'}>‹ Trang trước</button>
+            <span class="page-indicator">Trang ${page}</span>
+            <button type="button" class="btn" id="examPageNext" ${hasNext ? '' : 'disabled'}>Trang sau ›</button>
+        `;
+        document.getElementById('examPagePrev')?.addEventListener('click', () => load(page - 1));
+        document.getElementById('examPageNext')?.addEventListener('click', () => load(page + 1));
     }
 
     let timer;
@@ -55,5 +85,5 @@
         if (!e.target.closest('.search-wrap')) dropdown?.classList.add('hidden');
     });
 
-    load();
+    load(1);
 })();
