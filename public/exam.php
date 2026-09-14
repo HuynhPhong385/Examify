@@ -33,8 +33,15 @@ require __DIR__ . '/_header.php';
     </div>
 
     <div id="saveStatus" class="save-status">Đang khởi tạo lượt thi...</div>
+    <div id="examProgress" class="exam-progress"></div>
+    <div id="questionNav" class="question-nav" role="tablist" aria-label="Danh sách câu hỏi"></div>
+
     <form id="examForm">
         <div id="questionList" class="question-list"></div>
+        <div class="exam-pager">
+            <button type="button" id="prevQuestion" class="btn" disabled>‹ Câu trước</button>
+            <button type="button" id="nextQuestion" class="btn">Câu sau ›</button>
+        </div>
         <button id="submitExam" class="btn primary large" type="submit" disabled>Nộp bài & chấm điểm</button>
     </form>
 </section>

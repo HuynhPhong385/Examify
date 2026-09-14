@@ -8,11 +8,21 @@
     const submitBtn = document.getElementById('submitExam');
     const status = document.getElementById('saveStatus');
     const timerEl = document.getElementById('timer');
+    const progressEl = document.getElementById('examProgress');
+    const navEl = document.getElementById('questionNav');
+    const prevBtn = document.getElementById('prevQuestion');
+    const nextBtn = document.getElementById('nextQuestion');
+
     let attemptId = null;
     let startedAt = null;
     let submitting = false;
     let lastSaveSeq = 0;
     const saveQueues = new Map();
+
+    //Trạng thái phân trang câu hỏi
+    let questions = [];
+    let currentIndex = 0;
+    const answered = new Set();
 
     function setStatus(text, type = '') {
         status.textContent = text;
@@ -28,8 +38,9 @@
             attemptId = Number(attempt.id);
             startedAt = new Date(Number(attempt.started_at_epoch) * 1000);
             const data = await Examify.api(`/exams/${examId}/questions`);
-            renderQuestions(data.items);
-            submitBtn.disabled = data.items.length === 0;
+            questions = data.items || [];
+            renderQuestions(questions);
+            submitBtn.disabled = questions.length === 0;
             setStatus(attempt.resumed ? 'Đã khôi phục lượt thi đang làm.' : 'Lượt thi đã bắt đầu.', 'ok');
             startTimer();
         } catch (err) {
@@ -40,10 +51,13 @@
     function renderQuestions(items) {
         if (!items.length) {
             list.innerHTML = '<div class="alert info">Đề thi chưa có câu hỏi.</div>';
+            navEl.innerHTML = '';
+            progressEl.textContent = '';
+            document.querySelector('.exam-pager')?.classList.add('hidden');
             return;
         }
         list.innerHTML = items.map((q, i) => `
-            <article class="question-card" data-question-id="${Number(q.id)}">
+            <article class="question-card" data-question-id="${Number(q.id)}" data-index="${i}">
                 <div class="question-title">
                     <span>Câu ${i + 1}</span>
                     <small>${Number(q.points)} điểm</small>
@@ -68,7 +82,9 @@
             const seq = ++lastSaveSeq;
             setStatus('Đang tự lưu đáp án...');
 
-            // Serialize request theo từng câu để click nhanh không bị response cũ ghi đè lựa chọn mới.
+            answered.add(questionId);
+            updateNavStates();
+
             const previous = saveQueues.get(questionId) || Promise.resolve();
             const next = previous.catch(() => { }).then(() => Examify.api(`/attempts/${attemptId}/answers`, {
                 method: 'POST',
@@ -82,7 +98,46 @@
                 setStatus('Lỗi tự lưu: ' + err.message, 'error');
             });
         });
+
+        buildNav();
+        goToQuestion(0);
     }
+
+    // Lưới số câu để nhảy nhanh tới bất kỳ câu nào, có đánh dấu đã làm/chưa làm.
+    function buildNav() {
+        navEl.innerHTML = questions.map((q, i) => `
+            <button type="button" class="nav-dot" data-index="${i}" aria-label="Câu ${i + 1}">${i + 1}</button>
+        `).join('');
+        navEl.addEventListener('click', e => {
+            const btn = e.target.closest('.nav-dot');
+            if (!btn) return;
+            goToQuestion(Number(btn.dataset.index));
+        });
+    }
+
+    function updateNavStates() {
+        navEl.querySelectorAll('.nav-dot').forEach((btn, i) => {
+            const q = questions[i];
+            btn.classList.toggle('current', i === currentIndex);
+            btn.classList.toggle('answered', answered.has(Number(q.id)));
+        });
+    }
+
+    function goToQuestion(index) {
+        if (index < 0 || index >= questions.length) return;
+        currentIndex = index;
+        list.querySelectorAll('.question-card').forEach(card => {
+            card.classList.toggle('active', Number(card.dataset.index) === currentIndex);
+        });
+        progressEl.textContent = `Câu ${currentIndex + 1} / ${questions.length}`;
+        prevBtn.disabled = currentIndex === 0;
+        nextBtn.disabled = currentIndex === questions.length - 1;
+        updateNavStates();
+        list.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    prevBtn?.addEventListener('click', () => goToQuestion(currentIndex - 1));
+    nextBtn?.addEventListener('click', () => goToQuestion(currentIndex + 1));
 
     function startTimer() {
         const end = startedAt.getTime() + durationMinutes * 60 * 1000;
