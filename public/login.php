@@ -2,7 +2,9 @@
 require __DIR__ . '/../app/bootstrap.php';
 
 if (Auth::user()) {
-    redirect('/dashboard.php');
+    $target = $_SESSION['redirect_after_login'] ?? '/dashboard.php';
+    unset($_SESSION['redirect_after_login']);
+    redirect($target);
 }
 
 $error = '';
@@ -12,7 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!hash_equals($_SESSION['csrf_token'] ?? '', $_POST['csrf_token'] ?? '')) {
         $error = 'Phiên đăng nhập không hợp lệ. Hãy thử lại.';
     } elseif (Auth::attempt($email, $password)) {
-        redirect('/dashboard.php');
+        $target = $_SESSION['redirect_after_login'] ?? '/dashboard.php';
+        unset($_SESSION['redirect_after_login']);
+        redirect($target);
     } else {
         $error = 'Email hoặc mật khẩu không đúng.';
     }

@@ -1,12 +1,14 @@
 <?php
 require __DIR__ . '/../app/bootstrap.php';
-require_auth_page();
+
+$user = Auth::user();
+
 $pageTitle = 'Danh sách đề thi - Examify';
 require __DIR__ . '/_header.php';
 ?>
 <section class="page-head">
     <div>
-        <h1><?= $user['role']==='student' ? 'Đề thi đang mở' : 'Đề thi đang quản lý' ?></h1>
+        <h1><?= (!$user || $user['role']==='student') ? 'Đề thi đang mở' : 'Đề thi đang quản lý' ?></h1>
         <p class="muted">Tìm kiếm tức thời theo tên, mô tả hoặc chuyên mục.</p>
     </div>
 </section>

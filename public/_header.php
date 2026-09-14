@@ -38,150 +38,150 @@ $currentRole = $roles[$role] ?? $roles['teacher'];
 </head>
 
 <body>
-    <?php if ($user):?>
 <header class="topbar">
     <a class="brand" href="<?= e(base_url('/dashboard.php')) ?>">Examify</a>
     <button type="button" class="nav-toggle" id="navToggle" aria-label="Mở menu" aria-expanded="false" aria-controls="topbarNav">
         <span></span><span></span><span></span>
     </button>
     <nav id="topbarNav">
+        <a href="<?= e(base_url('/exams.php')) ?>">Đề thi</a>
+
         <?php if ($user): ?>
-            <a href="<?= e(base_url('/exams.php')) ?>">Đề thi</a>
             <?php if (in_array($user['role'], ['admin','teacher'], true)): ?>
                 <a href="<?= e(base_url('/teacher/exams.php')) ?>">Quản lý đề</a>
             <?php endif; ?>
-<div class="role-selector" id="roleSelector">
 
-    <!-- Button chính -->
-    <button
-        type="button"
-        class="role-button user-chip"
-        id="roleButton"
-    >
+            <div class="role-selector" id="roleSelector">
 
-        <span class="role-button-content">
+                <!-- Button chính -->
+                <button
+                    type="button"
+                    class="role-button user-chip"
+                    id="roleButton"
+                >
 
-            <span
-                class="role-name"
-                id="currentRoleName"
-            >
-                <?= htmlspecialchars($currentRole['name']) ?>
-            </span>
+                    <span class="role-button-content">
 
-            <span class="dot">·</span>
+                        <span
+                            class="role-name"
+                            id="currentRoleName"
+                        >
+                            <?= htmlspecialchars($currentRole['name']) ?>
+                        </span>
 
-            <span
-                class="role-username"
-                id="currentRoleUsername"
-            >
-                <?= htmlspecialchars($currentRole['username']) ?>
-            </span>
+                        <span class="dot">·</span>
 
-        </span>
+                        <span
+                            class="role-username"
+                            id="currentRoleUsername"
+                        >
+                            <?= htmlspecialchars($currentRole['username']) ?>
+                        </span>
 
-        <span class="arrow">▼</span>
+                    </span>
 
-    </button>
+                    <span class="arrow">▼</span>
 
-
-    <!-- Dropdown -->
-    <div class="role-dropdown">
-
-        <!-- Admin -->
-        <button
-            type="button"
-            class="role-item <?= $currentRole['username'] === 'admin' ? 'active' : '' ?>"
-            data-role="admin"
-            data-name="Quản trị viên"
-            data-username="admin"
-        >
-
-            <span class="role-info">
-
-                <span class="role-title">
-                    Quản trị viên
-                </span>
-
-                <span class="separator">·</span>
-
-                <span class="username">
-                    admin
-                </span>
-
-            </span>
-
-            <span class="check">✓</span>
-
-        </button>
+                </button>
 
 
-        <!-- Teacher -->
-        <button
-            type="button"
-            class="role-item <?= $currentRole['username'] === 'teacher' ? 'active' : '' ?>"
-            data-role="teacher"
-            data-name="Giáo viên Demo"
-            data-username="teacher"
-        >
+                <!-- Dropdown -->
+                <div class="role-dropdown">
 
-            <span class="role-info">
+                    <!-- Admin -->
+                    <button
+                        type="button"
+                        class="role-item <?= $currentRole['username'] === 'admin' ? 'active' : '' ?>"
+                        data-role="admin"
+                        data-name="Quản trị viên"
+                        data-username="admin"
+                    >
 
-                <span class="role-title">
-                    Giáo viên Demo
-                </span>
+                        <span class="role-info">
 
-                <span class="separator">·</span>
+                            <span class="role-title">
+                                Quản trị viên
+                            </span>
 
-                <span class="username">
-                    teacher
-                </span>
+                            <span class="separator">·</span>
 
-            </span>
+                            <span class="username">
+                                admin
+                            </span>
 
-            <span class="check">✓</span>
+                        </span>
 
-        </button>
+                        <span class="check">✓</span>
+
+                    </button>
 
 
-        <!-- Student -->
-        <button
-            type="button"
-            class="role-item <?= $currentRole['username'] === 'student' ? 'active' : '' ?>"
-            data-role="student"
-            data-name="Học sinh Demo"
-            data-username="student"
-        >
+                    <!-- Teacher -->
+                    <button
+                        type="button"
+                        class="role-item <?= $currentRole['username'] === 'teacher' ? 'active' : '' ?>"
+                        data-role="teacher"
+                        data-name="Giáo viên Demo"
+                        data-username="teacher"
+                    >
 
-            <span class="role-info">
+                        <span class="role-info">
 
-                <span class="role-title">
-                    Học sinh Demo
-                </span>
+                            <span class="role-title">
+                                Giáo viên Demo
+                            </span>
 
-                <span class="separator">·</span>
+                            <span class="separator">·</span>
 
-                <span class="username">
-                    student
-                </span>
+                            <span class="username">
+                                teacher
+                            </span>
 
-            </span>
+                        </span>
 
-            <span class="check">✓</span>
+                        <span class="check">✓</span>
 
-        </button>
+                    </button>
 
-    </div>
 
-</div>
+                    <!-- Student -->
+                    <button
+                        type="button"
+                        class="role-item <?= $currentRole['username'] === 'student' ? 'active' : '' ?>"
+                        data-role="student"
+                        data-name="Học sinh Demo"
+                        data-username="student"
+                    >
 
-    </button>
-            <a href="">Đăng xuất</a>
+                        <span class="role-info">
+
+                            <span class="role-title">
+                                Học sinh Demo
+                            </span>
+
+                            <span class="separator">·</span>
+
+                            <span class="username">
+                                student
+                            </span>
+
+                        </span>
+
+                        <span class="check">✓</span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <a href="<?= e(base_url('/logout.php')) ?>">Đăng xuất</a>
+        <?php else: ?>
+            <a class="btn primary" href="<?= e(base_url('/login.php')) ?>">Đăng nhập</a>
         <?php endif; ?>
     </nav>
 </header>
-<?php endif;?>
 <script src="<?= e(base_url('/assets/js/jquery.min.js')) ?>"></script>
 <script src="assets/js/dropdown.js"></script>
 </body>
 <main class="container">
-

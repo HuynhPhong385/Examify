@@ -62,6 +62,8 @@ function require_auth_page(): array
 {
     $user = Auth::user();
     if (!$user) {
+        // Lưu lại URL hiện tại để sau khi login xong quay về đúng chỗ
+        $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'] ?? '/dashboard.php';
         redirect('/login.php');
     }
     return $user;
