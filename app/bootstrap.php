@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-$config = require __DIR__ . '/../config/config.php';
+$config = require __DIR__ . '/config/config.php';
 date_default_timezone_set($config['app']['timezone']);
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
