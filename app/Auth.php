@@ -30,12 +30,6 @@ final class Auth
 
         $storedPassword = (string)$user['password'];
 
-        /*
-         * Kiểm tra mật khẩu.
-         *
-         * - Nếu DB đã lưu password_hash() -> password_verify()
-         * - Nếu DB cũ đang lưu plaintext -> so sánh tạm thời
-         */
         $validPassword = false;
 
         if (password_get_info($storedPassword)['algo'] !== 0) {

@@ -39,11 +39,5 @@ require __DIR__ . '/_header.php';
         </label>
         <button class="btn primary" type="submit">Đăng nhập</button>
     </form>
-    <div class="demo-box">
-        <strong>Tài khoản demo</strong>
-        <div>Admin: admin@examify.local / admin123</div>
-        <div>Giáo viên: teacher@examify.local / teacher123</div>
-        <div>Học sinh: hoc@examify.local / hoc123</div>
-    </div>
 </section>
-<?php require __DIR__ . '/_footer.php'; ?>a
+<?php require __DIR__ . '/_footer.php'; ?>
