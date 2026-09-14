@@ -41,9 +41,9 @@ require __DIR__ . '/_header.php';
     </form>
     <div class="demo-box">
         <strong>Tài khoản demo</strong>
-        <div>Admin: admin@examify.local / Admin@123</div>
-        <div>Giáo viên: teacher@examify.local / Teacher@123</div>
-        <div>Học sinh: student@examify.local / Student@123</div>
+        <div>Admin: admin@examify.local / admin123</div>
+        <div>Giáo viên: teacher@examify.local / teacher123</div>
+        <div>Học sinh: hoc@examify.local / hoc123</div>
     </div>
 </section>
-<?php require __DIR__ . '/_footer.php'; ?>
+<?php require __DIR__ . '/_footer.php'; ?>a
