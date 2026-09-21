@@ -1,16 +1,16 @@
 USE examify;
 
 INSERT INTO users (name, email, password, role) VALUES
-('Quản trị viên', 'admin@examify.local', '$2y$12$kiLHg2qiZaoXoJoEyLR87OrXuH7bu.Pm74aTrmb5aUSCyM4OfDhqy', 'admin'),
-('Giáo viên Demo', 'teacher@examify.local', '$2y$12$fiQvesIaQtgp9znv/.mkMeMt3e4Ps90fenl3qgMHNzKesdQB4Ba.y', 'teacher'),
-('Học sinh Demo', 'student@examify.local', '$2y$12$li4Pbz1nfsH8OJIuOYkoVOdCiXcBdHE7Nvw1PQv3ZmzIZS064s2Zi', 'student')
+('Quản trị viên', 'admin@examify.local', '123456', 'admin'),
+('Giáo viên Demo', 'teacher@examify.local', '123456', 'teacher'),
+('Học sinh Demo', 'student@examify.local', '123456', 'student')
 ON DUPLICATE KEY UPDATE name = VALUES(name);
 
 SET @teacher_id = (SELECT id FROM users WHERE email='teacher@examify.local' LIMIT 1);
 
 INSERT INTO exams (title, slug, description, category, duration_minutes, passing_score, is_published, created_by)
 SELECT 'Đề mẫu Kiến thức CNTT cơ bản', 'de-mau-kien-thuc-cntt-co-ban',
-       'Đề thi demo để kiểm thử chức năng làm bài, tự lưu AJAX và chấm điểm tự động.',
+       'Đề thi demo để kiểm thử chức năng làm bài, tự lưu và chấm điểm tự động.',
        'CNTT', 15, 60.00, 1, @teacher_id
 WHERE NOT EXISTS (SELECT 1 FROM exams WHERE slug='de-mau-kien-thuc-cntt-co-ban');
 

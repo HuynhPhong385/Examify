@@ -9,7 +9,7 @@ if (!defined('APP_NAME')) {
     define('APP_NAME', 'Examify');
 }
 if (!defined('BASE_URL')) {
-    define('BASE_URL', ''); // Ví dụ: '/examify/public' nếu chạy trong subfolder.
+    define('BASE_URL', '/Examify/public');
 }
 if (!defined('DB_HOST')) {
     define('DB_HOST', '127.0.0.1');

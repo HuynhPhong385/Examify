@@ -2,6 +2,7 @@
 require __DIR__ . '/../app/bootstrap.php';
 
 $user = Auth::user();
+
 $pdo = Database::pdo();
 
 if ($user && in_array($user['role'], ['admin','teacher'], true)) {
@@ -49,13 +50,13 @@ require __DIR__ . '/_header.php';
 <section class="stats">
     <article class="stat"><strong><?= $examCount ?></strong><span>Đề đang mở</span></article>
     <article class="stat"><strong><?= $attemptCount ?></strong><span>Lượt đã nộp</span></article>
-    <article class="stat"><strong>AJAX</strong><span>Tự lưu đáp án</span></article>
+    <article class="stat"><strong>Hơn 2000 giảng viên tin cậy và sử dụng</strong></article>
 </section>
 
 <?php if ($sampleExams): ?>
 <section class="panel featured-exams">
     <div class="panel-heading">
-        <h2>🎯 Đề thi nổi bật</h2>
+        <h2>Đề thi nổi bật</h2>
         <p class="muted">Xem trước một vài đề đang mở. Bấm vào để bắt đầu làm bài ngay.</p>
     </div>
 
@@ -156,12 +157,20 @@ require __DIR__ . '/_header.php';
 </style>
 <?php endif; ?>
 
-<?php if ($user && in_array($user['role'], ['admin','teacher'], true)): ?>
-<section class="panel">
-    <h2>Dành cho giáo viên / quản trị</h2>
-    <p>Tạo đề, thêm câu hỏi và đáp án, xuất bản đề rồi theo dõi lượt thi.</p>
-    <a class="btn" href="<?= e(base_url('/teacher/exams.php')) ?>">Quản lý đề thi</a>
-</section>
+<?php if ($user): ?>
+    <?php if ($user['role'] === 'admin'): ?>
+        <section class="panel">
+            <h2>Quản trị hệ thống (Admin)</h2>
+            <p>Quản lý toàn bộ tài khoản người dùng, cấu hình và danh sách đề thi hệ thống.</p>
+            <a class="btn primary" href="<?= e(base_url('/admin/dashboard.php')) ?>">Trang quản trị Admin</a>
+        </section>
+    <?php elseif ($user['role'] === 'teacher'): ?>
+        <section class="panel">
+            <h2>Dành cho giáo viên</h2>
+            <p>Tạo đề, thêm câu hỏi và đáp án, xuất bản đề rồi theo dõi lượt thi.</p>
+            <a class="btn primary" href="<?= e(base_url('/teacher/exams.php')) ?>">Quản lý đề thi</a>
+        </section>
+    <?php endif; ?>
 <?php endif; ?>
 
 <script src='assets/js/jquery.min.js'></script>

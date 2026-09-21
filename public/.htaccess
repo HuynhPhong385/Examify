@@ -1,5 +1,10 @@
 RewriteEngine On
 
+# Các endpoint REST không có tệp vật lý tương ứng (ví dụ /api/exams).
+# Chuyển chúng vào API trước khi rule mặc định đưa mọi URL về dashboard.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^api(?:/.*)?$ api/index.php [QSA,L]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ index.php [QSA,L]

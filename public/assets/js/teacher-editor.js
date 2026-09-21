@@ -2,7 +2,6 @@
     const shell = document.querySelector('.editor-shell');
     if (!shell) return;
     let examId = Number(shell.dataset.examId || 0);
-    const metaForm = document.getElementById('examMetaForm');
     const questionList = document.getElementById('questionEditorList');
     const addBtn = document.getElementById('addQuestionBtn');
     let questions = [];
@@ -12,36 +11,6 @@
             questions = JSON.parse(document.getElementById('questionData')?.textContent || '[]');
         } catch (_) { }
     }
-
-    function metaPayload() {
-        const fd = new FormData(metaForm);
-        return {
-            title: String(fd.get('title') || '').trim(),
-            description: String(fd.get('description') || '').trim(),
-            category: String(fd.get('category') || '').trim(),
-            duration_minutes: Number(fd.get('duration_minutes') || 30),
-            passing_score: Number(fd.get('passing_score') || 50),
-            is_published: fd.get('is_published') ? 1 : 0
-        };
-    }
-
-    metaForm.addEventListener('submit', async e => {
-        e.preventDefault();
-        const payload = metaPayload();
-        try {
-            if (!examId) {
-                const data = await Examify.api('/exams', { method: 'POST', body: JSON.stringify(payload) });
-                sessionStorage.setItem('pendingToast', 'Đã tạo đề. Bây giờ hãy thêm câu hỏi.');
-                window.location.replace(Examify.url(`/teacher/exam_editor.php?id=${Number(data.id)}`));
-
-            } else {
-                await Examify.api(`/exams/${examId}`, { method: 'PUT', body: JSON.stringify(payload) });
-                Examify.toast('Đã lưu thông tin đề.');
-            }
-        } catch (err) {
-            Examify.toast(err.message, 'error');
-        }
-    });
 
     if (!examId) return;
 

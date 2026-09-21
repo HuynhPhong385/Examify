@@ -17,7 +17,13 @@ function base_url(string $path = ''): string
 
 function redirect(string $path): never
 {
-    header('Location: ' . base_url($path));
+    global $config;
+    $base = rtrim((string)($config['app']['base_url'] ?? ''), '/');
+    $location = $base !== '' && ($path === $base || str_starts_with($path, $base . '/'))
+        ? $path
+        : base_url($path);
+
+    header('Location: ' . $location);
     exit;
 }
 

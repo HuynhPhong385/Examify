@@ -240,25 +240,9 @@ if (preg_match('#^/exams/(\d+)/questions$#', $path, $m)) {
             $posStmt = $pdo->prepare('SELECT COALESCE(MAX(position),0)+1 FROM questions WHERE exam_id=?');
             $posStmt->execute([$examId]);
             $position = (int)$posStmt->fetchColumn();
-            $idstmt = $pdo->query('SELECT id FROM questions ORDER BY id');
-            
-            $ids = $idstmt->fetchAll(PDO::FETCH_COLUMN);
-            $qid = count($ids)+1;
-            for ($quid = 0; $quid+1 < count($ids); $quid++) {
-                if ($ids[$quid+1]-$ids[$quid]!=1){
-                    $qid = $ids[$quid]+1;
-                    break;
-                }
-            }
-            $stmt = $pdo->prepare('INSERT INTO questions (id,exam_id,content,points,position) VALUES (?,?,?,?,?)');
-            $stmt->execute([$qid,$examId, $content, max(0.01, (float)($data['points'] ?? 1)), $position]);
-           
-            
-            //json_response(['error' => $qid], 422);
-            
-           
-            
-            //$qid = (int)$pdo->lastInsertId();
+            $stmt = $pdo->prepare('INSERT INTO questions (exam_id,content,points,position) VALUES (?,?,?,?)');
+            $stmt->execute([$examId, $content, max(0.01, (float)($data['points'] ?? 1)), $position]);
+            $qid = (int)$pdo->lastInsertId();
             $cstmt = $pdo->prepare('INSERT INTO choices (question_id,content,is_correct,position) VALUES (?,?,?,?)');
             foreach ($choices as $i => $c) {
                 $cc = trim((string)($c['content'] ?? ''));

@@ -23,6 +23,11 @@ $roles = [
 if (isset($role)){
 $currentRole = $roles[$role] ?? $roles['teacher'];
 }
+$homePath = match ($user['role'] ?? '') {
+    'admin' => '/admin/dashboard.php',
+    'teacher' => '/teacher/exams.php',
+    default => '/dashboard.php',
+};
 ?>
 <!doctype html>
 <html lang="vi">
@@ -39,7 +44,7 @@ $currentRole = $roles[$role] ?? $roles['teacher'];
 
 <body>
 <header class="topbar">
-    <a class="brand" href="<?= e(base_url('/dashboard.php')) ?>">Examify</a>
+    <a class="brand" href="<?= e(base_url($homePath)) ?>">Examify</a>
     <button type="button" class="nav-toggle" id="navToggle" aria-label="Mở menu" aria-expanded="false" aria-controls="topbarNav">
         <span></span><span></span><span></span>
     </button>
@@ -47,7 +52,10 @@ $currentRole = $roles[$role] ?? $roles['teacher'];
         <a href="<?= e(base_url('/exams.php')) ?>">Đề thi</a>
 
         <?php if ($user): ?>
-            <?php if (in_array($user['role'], ['admin','teacher'], true)): ?>
+            <?php if ($user['role'] === 'admin'): ?>
+                <a href="<?= e(base_url('/admin/quanly_user.php')) ?>">Người dùng</a>
+                <a href="<?= e(base_url('/teacher/exams.php')) ?>">Quản lý đề</a>
+            <?php elseif ($user['role'] === 'teacher'): ?>
                 <a href="<?= e(base_url('/teacher/exams.php')) ?>">Quản lý đề</a>
             <?php endif; ?>
 
