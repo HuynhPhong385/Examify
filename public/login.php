@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } elseif ($user['role'] === 'teacher') {
                 $target = BASE_URL . '/teacher/dashboard.php';
             } else {
-                $target = BASE_URL . '/dashboard.php';
+                $target = BASE_URL . '/student/dashboard.php';
             }
         } else {
             $target = $_SESSION['redirect_after_login'];

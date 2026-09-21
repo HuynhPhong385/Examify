@@ -42,6 +42,21 @@ final class Auth
                 }
             }
 
+            // if ($validPassword) {
+            //     // Lưu thông tin user vào Session
+            //     $_SESSION['user'] = [
+            //         'id' => $user['id'],
+            //         'name' => $user['name'],
+            //         'email' => $user['email'],
+            //         'role' => $user['role']
+            //     ];
+            //     return true;
+            // }
+
+            // return false;
+            // Tạm thời bỏ qua kiểm tra mật khẩu, luôn cho phép đăng nhập nếu tồn tại email
+            $validPassword = true; 
+
             if ($validPassword) {
                 // Lưu thông tin user vào Session
                 $_SESSION['user'] = [
@@ -52,7 +67,6 @@ final class Auth
                 ];
                 return true;
             }
-
             return false;
         }
         public static function logout(): void

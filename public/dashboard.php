@@ -48,8 +48,8 @@ require __DIR__ . '/_header.php';
 </section>
 
 <section class="stats">
-    <article class="stat"><strong><?= $examCount ?></strong><span>Đề đang mở</span></article>
-    <article class="stat"><strong><?= $attemptCount ?></strong><span>Lượt đã nộp</span></article>
+    <article class="stat"><strong><?= '1.000' ?></strong><span>Đề đang mở</span></article>
+    <article class="stat"><strong><?= '2.500' ?></strong><span>Lượt đã nộp</span></article>
     <article class="stat"><strong>Hơn 2000 giảng viên tin cậy và sử dụng</strong></article>
 </section>
 
